@@ -1,0 +1,607 @@
+/* 极简科技感风格 - 贪吃蛇游戏 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Orbitron', sans-serif;
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 10px;
+    overflow: hidden;
+}
+
+/* 游戏容器 */
+.game-container {
+    background-color: #121212;
+    border-radius: 4px;
+    border: 1px solid #2f2f2f;
+    box-shadow: 0 0 30px rgba(0, 255, 170, 0.1);
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 游戏头部 */
+.game-header {
+    background-color: #1a1a1a;
+    color: #00ffa9;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #2f2f2f;
+}
+
+.game-header h1 {
+    margin: 0;
+    font-size: 22px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* 游戏信息 */
+.game-info {
+    display: flex;
+    justify-content: space-around;
+    padding: 8px;
+    background-color: #1a1a1a;
+    border-bottom: 1px solid #2f2f2f;
+}
+
+.game-info div {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.game-info i {
+    margin-right: 8px;
+    color: #00ffa9;
+}
+
+/* 游戏内容 */
+.game-content {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #121212;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* 游戏控制 */
+.game-controls {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    justify-content: center;
+    width: auto;
+}
+
+.game-controls button, .game-controls select {
+    background-color: #1a1a1a;
+    color: #00ffa9;
+    border: 1px solid #333;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+}
+
+.game-controls button:hover, .game-controls select:hover {
+    background-color: #333;
+    border-color: #00ffa9;
+    box-shadow: 0 0 10px rgba(0, 255, 169, 0.3);
+}
+
+.game-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 游戏模式和道具样式 */
+.game-mode-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    border: 1px solid #333;
+    width: auto;
+    min-width: 250px;
+    max-width: 100%;
+}
+
+.game-mode-icon {
+    font-size: 18px;
+    margin-right: 6px;
+}
+
+.game-mode-details {
+    flex: 1;
+}
+
+.game-mode-name {
+    color: #00ffa9;
+    font-weight: bold;
+    margin-bottom: 2px;
+    font-size: 13px;
+}
+
+.game-mode-description {
+    color: #b0b0b0;
+    font-size: 11px;
+}
+
+/* 道具和效果样式 */
+.item-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border-left: 4px solid #00ffa9;
+    z-index: 1000;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.item-notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.item-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #00ffa9;
+}
+
+.item-description {
+    font-size: 12px;
+    color: #b0b0b0;
+}
+
+/* 时间挑战模式计时器 */
+.timer-container {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #00ffa9;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    display: none;
+    z-index: 100;
+}
+
+.timer-icon {
+    font-size: 16px;
+    margin-right: 3px;
+}
+
+#timer {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.timer-container.active {
+    display: flex;
+    align-items: center;
+}
+
+.timer-icon {
+    margin-right: 5px;
+}
+
+/* 游戏画布 */
+#game-board {
+    background-color: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 2px;
+    box-shadow: 0 0 20px rgba(0, 255, 170, 0.1);
+    margin-bottom: 10px;
+    width: 350px;
+    height: 350px;
+}
+
+/* 游戏说明 */
+.game-instructions {
+    background-color: #1a1a1a;
+    border-radius: 2px;
+    border: 1px solid #2f2f2f;
+    padding: 8px;
+    margin-top: 5px;
+    width: 100%;
+    max-width: 350px;
+}
+
+.game-instructions h3 {
+    color: #00ffa9;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.game-instructions p {
+    color: #b0b0b0;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+/* 游戏底部 */
+.game-footer {
+    background-color: #1a1a1a;
+    text-align: center;
+    padding: 5px;
+    font-size: 10px;
+    color: #666;
+    border-top: 1px solid #2f2f2f;
+}
+
+/* 模态框 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 768px) {
+    .game-container {
+        max-width: 100%;
+        border-radius: 0;
+    }
+    
+    #game-board {
+        width: 100%;
+        max-width: 350px;
+        height: 350px;
+    }
+    
+    .game-header h1 {
+        font-size: 24px;
+    }
+    
+    .game-info div {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .game-container {
+        max-height: 100vh;
+    }
+    
+    #game-board {
+        max-width: 300px;
+        height: 300px;
+    }
+    
+    .game-controls {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .control-group {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .game-controls button, .game-controls select {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+    
+    .game-header h1 {
+        font-size: 20px;
+    }
+}
+
+/* 成就列表样式 */
+.achievements-list {
+    margin: 20px 0;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.achievement-item.unlocked {
+    border-color: #00ffa9;
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(0, 255, 169, 0.3);
+}
+
+.achievement-icon {
+    font-size: 24px;
+    margin-right: 15px;
+    width: 30px;
+    text-align: center;
+}
+
+.achievement-info {
+    flex: 1;
+}
+
+.achievement-title {
+    color: #e0e0e0;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.achievement-description {
+    color: #999;
+    font-size: 12px;
+}
+
+.achievement-status {
+    color: #666;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.achievement-item.unlocked .achievement-status {
+    color: #00ffa9;
+}
+
+.modal-content {
+    background-color: #121212;
+    padding: 30px;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0, 255, 169, 0.3);
+    max-width: 400px;
+    width: 90%;
+    border: 1px solid #00ffa9;
+}
+
+.modal-content h2 {
+    color: #00ffa9;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.modal-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #e0e0e0;
+}
+
+#restart-btn {
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #00ffa9;
+    border: 1px solid #00ffa9;
+    border-radius: 2px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+#restart-btn:hover {
+    background-color: rgba(0, 255, 169, 0.1);
+    box-shadow: 0 0 10px rgba(0, 255, 169, 0.5);
+}
+
+/* 成就通知 */
+.achievement-notification {
+    position: fixed;
+    top: 20px;
+    right: -300px;
+    width: 280px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #00ffa9;
+    border-radius: 4px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0, 255, 169, 0.3);
+    transition: right 0.5s ease;
+    z-index: 1001;
+}
+
+.achievement-notification.show {
+    right: 20px;
+}
+
+.achievement-notification .achievement-icon {
+    font-size: 30px;
+    margin-right: 15px;
+}
+
+.achievement-notification .achievement-title {
+    color: #00ffa9;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.achievement-notification .achievement-description {
+    color: #e0e0e0;
+    font-size: 12px;
+}
+
+/* 升级通知 */
+.level-up-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 2px solid gold;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1001;
+}
+
+.level-up-notification.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.level-up-notification .level-up-icon {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.level-up-notification .level-up-title {
+    color: gold;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.level-up-notification .level-up-description {
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+/* 响应式设计 - 移动端支持 */
+@media (max-width: 600px) {
+    .game-container {
+        padding: 10px;
+    }
+    
+    .game-controls {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .control-group {
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: 300px;
+        gap: 5px;
+    }
+    
+    .game-controls button, .game-controls select {
+        flex: 1;
+        min-width: 80px;
+        margin-bottom: 5px;
+    }
+    
+    #game-board {
+        width: 100%;
+        height: auto;
+        max-width: 350px;
+        max-height: 350px;
+    }
+    
+    .achievement-notification {
+        width: 80%;
+        right: -100%;
+    }
+    
+    .achievement-notification.show {
+        right: 10%;
+    }
+}
+    background-color: rgba(0, 255, 169, 0.1);
+/* 删除多余的大括号 */
+}
+/* 删除多余的大括号 */
+
+/* 添加科技感动画效果 */
+@keyframes pulse {
+    0% { box-shadow: 0 0 5px rgba(0, 255, 169, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(0, 255, 169, 0.8); }
+    100% { box-shadow: 0 0 5px rgba(0, 255, 169, 0.5); }
+}
+
+#game-board {
+    animation: pulse 4s infinite;
+}
+
+/* 响应式设计 */
+@media (max-width: 600px) {
+    .game-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    #game-board {
+        width: 100%;
+        height: auto;
+    }
+}

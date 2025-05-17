@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贪吃蛇游戏</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>贪吃蛇游戏</h1>
+        </div>
+        
+        <div class="game-info">
+            <div><i class="fas fa-trophy"></i> 分数: <span id="score">0</span></div>
+            <div><i class="fas fa-bolt"></i> 速度: <span id="speed">1</span></div>
+            <div><i class="fas fa-apple-alt"></i> 食物: <span id="food-count">0</span></div>
+        </div>
+        
+        <div class="game-content">
+            <div class="game-controls">
+                <div class="control-group">
+                    <select id="difficulty-select">
+                        <option value="easy">简单模式</option>
+                        <option value="normal" selected>普通模式</option>
+                        <option value="hard">困难模式</option>
+                    </select>
+                    <select id="game-mode-select">
+                        <option value="classic" selected>经典模式 🐍</option>
+                        <option value="timeChallenge">时间挑战 ⏱️</option>
+                        <option value="maze">迷宫模式 🧩</option>
+                        <option value="noBoundaries">无边界模式 🌀</option>
+                        <option value="crazy">疯狂模式 🤪</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <button id="start-game-btn"><i class="fas fa-play"></i> 开始游戏</button>
+                    <button id="pause-game-btn"><i class="fas fa-pause"></i> 暂停</button>
+                    <button id="reset-btn"><i class="fas fa-redo"></i> 重置</button>
+                </div>
+            </div>
+            
+            <canvas id="game-board" width="400" height="400"></canvas>
+            
+            <div class="game-instructions">
+                <h3>游戏说明</h3>
+                <p>使用键盘方向键或WASD控制蛇的移动方向。</p>
+                <p>吃到食物可以增加分数和蛇的长度。</p>
+                <p>撞到墙壁或自己的身体会导致游戏结束。</p>
+            </div>
+        </div>
+        
+        <div class="game-footer">
+            <p>© 2024 贪吃蛇游戏 | 使用HTML5 Canvas制作</p>
+        </div>
+    </div>
+    
+    <!-- 游戏结束弹窗 -->
+    <div id="game-over-modal" class="modal">
+        <div class="modal-content">
+            <h2>游戏结束</h2>
+            <p>你的得分: <span id="final-score">0</span></p>
+            <button id="restart-btn">再玩一次</button>
+        </div>
+    </div>
+    
+    <script src="./js/effects.js"></script>
+    <script src="./js/game-modes.js"></script>
+    <script src="./js/game.js"></script>
+</body>
+</html>
